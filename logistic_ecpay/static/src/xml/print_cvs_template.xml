@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<template xml:space="preserve">
+    <div t-name="print_cvs_template">
+        <button class="btn btn-sm btn-default oe_highlight o_print_cvs_button">列印物流託運單</button>
+    </div>
+</template>

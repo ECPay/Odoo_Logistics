@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_delivery_carrier_form_with_provider_ecpay" model="ir.ui.view">
+        <field name="name">delivery.carrier.form.provider.ecpay</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='destination']" position='before'>
+                <page string="ECPay Configuration" attrs="{'invisible': [('delivery_type', '!=', 'ecpay')]}">
+                    <group>
+                        <group name="group_interface_setting" string="介接設定">
+                            <field name="ecpay_type"/>
+                            <field name="MerchantID"/>
+                            <field name="HashKey"/>
+                            <field name="HashIV"/>
+                        </group>
+                        <group name="group_domain_setting" string="網域設定">
+                            <field name="ecpay_domain"/>
+                        </group>
+                        <!-- <group name="group_logistic_method" string="物流方式"> -->
+                        <group name="cvs_method" string="便利商店">
+                            <div class="o_row o_td_label">
+                                <field name="ecpay_unimart"/>
+                                <label for="ecpay_unimart"/>
+                            </div>
+                            <field nolabel="1" name="ecpay_unimart_price" attrs="{'required':[('ecpay_unimart','!=', False)]}"/>
+                            <div class="o_row o_td_label">
+                                <field name="ecpay_fami"/>
+                                <label for="ecpay_fami"/>
+                            </div>
+                            <field nolabel="1" name="ecpay_fami_price" attrs="{'required':[('ecpay_fami','!=', False)]}"/>
+                            <div class="o_row o_td_label">
+                                <field name="ecpay_hilife"/>
+                                <label for="ecpay_hilife"/>
+                            </div>
+                            <field nolabel="1" name="ecpay_hilife_price" attrs="{'required':[('ecpay_hilife','!=', False)]}"/>
+                            <div class="o_row o_td_label" attrs="
+                            {'invisible':[
+                            ('ecpay_unimart','==', False),
+                            ('ecpay_fami','==', False),
+                            ('ecpay_hilife','==', False)]}">
+                                <field name="ecpay_cod"/>
+                                <label for="ecpay_cod"/>
+                            </div>
+                        </group>
+                        <group name="home_method" string="宅配">
+                            <div class="o_row o_td_label">
+                                <field name="ecpay_tcat"/>
+                                <label for="ecpay_tcat"/>
+                            </div>
+                            <field nolabel="1" name="ecpay_tcat_price" attrs="{'required':[('ecpay_tcat','!=', False)]}"/>
+                            <div class="o_row o_td_label">
+                                <field name="ecpay_ecan"/>
+                                <label for="ecpay_ecan"/>
+                            </div>
+                            <field nolabel="1" name="ecpay_ecan_price" attrs="{'required':[('ecpay_ecan','!=', False)]}"/>
+                        </group>
+                        <!-- </group> -->
+                    </group>
+                </page>
+                <page string="ECPay B2C Testing" attrs="
+                {'invisible': ['|', ('delivery_type', '!=', 'ecpay'), ('ecpay_type', '!=', 'b2c')]}">
+                    <group>
+                        <group name="create_unimart_test" string="建立統一超商 B2C 測標訂單">
+                            <button name="create_test_data" type="object" string="統一超商測標" context="{'cvs': 'UNIMART'}" class="oe_highlight"/>
+                        </group>
+                        <group name="create_family_test" string="建立全家 B2C 測標訂單">
+                            <button name="create_test_data" type="object" string="全家測標" context="{'cvs': 'FAMI'}" class="oe_highlight"/>
+                        </group>
+                        <group name="create_hilife_test" string="建立萊爾富 B2C 測標訂單">
+                            <button name="create_test_data" type="object" string="萊爾富測標" context="{'cvs': 'HILIFE'}" class="oe_highlight"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_tree_logistic_ecpay" model="ir.ui.view">
+        <field name="name">綠界物流訂單列表</field>
+        <field name="model">shipping.ecpay.model</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree create="false">
+                <field name="ReferenceNo" />
+                <field name="MerchantTradeNo"/>
+                <field name="LogisticsType"/>
+                <field name="LogisticsSubType"/>
+                <field name="ReceiverName"/>
+                <field name="ReceiverCellPhone"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_logistic_ecpay" model="ir.ui.view">
+        <field name="name">綠界物流訂單表單</field>
+        <field name="model">shipping.ecpay.model</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="ReferenceNo" readonly="1"/>
+                            <field name="AllPayLogisticsID" readonly="1"/>
+                            <field name="MerchantTradeNo" readonly="1"/>
+                            <field name="LogisticsType" readonly="1"/>
+                            <field name="LogisticsSubType" readonly="1"/>
+                            <field name="CVSStoreID" attrs="{'invisible':[('LogisticsType', '!=', 'CVS')]}" readonly="1"/>
+                            <field name="CVSStoreName" attrs="{'invisible':[('LogisticsType', '!=', 'CVS')]}" readonly="1"/>
+                            <field name="ReceiverName" />
+                            <field name="ReceiverCellPhone" />
+                            <field name="ReceiverAddress" attrs="{'invisible':[('LogisticsType', '=', 'CVS')]}" />
+                        </group>
+                        <group>
+                            <field name="RtnCode" readonly="1"/>
+                            <field name="RtnMsg" readonly="1"/>
+                            <field name="GoodsAmount" readonly="1"/>
+                            <field name="UpdateStatusDate" readonly="1"/>
+                            <field name="CVSPaymentNo" attrs="{'invisible':[('LogisticsType', '!=', 'CVS')]}" readonly="1"/>
+                            <field name="CVSValidationNo" attrs="{'invisible':[('LogisticsSubType', '!=', 'UNIMARTC2C')]}" readonly="1"/>
+                            <field name="BookingNote" readonly="1"/>
+                            <widget name="print_cvs_shipping" attrs="{'invisible':[('AllPayLogisticsID', '=', False)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_company_form_with_ecpay_sender_info" model="ir.ui.view">
+        <field name="name">res.company.form.ecpay.sender.info</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='social_media']" position='after'>
+                <group string="寄件人資訊" name="social_media">
+                    <field name="SenderName"/>
+                    <field name="SenderPhone"/>
+                    <field name="SenderCellPhone"/>
+                    <field name="SenderZipCode"/>
+                    <field name="SenderAddress"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_withcarrier_out_form_with_ecpay_home" model="ir.ui.view">
+        <field name="name">delivery.stock.picking.withcarrier.form.view.ecpay.home</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/group[last()]" position="after">
+            <field name="LogisticsSubType" attrs="{'invisible': True}" />
+                <div attrs="{'invisible':[('LogisticsSubType', '!=', 'TCAT'), ('LogisticsSubType', '!=', 'ECAN')]}">
+                <separator string="綠界宅配設定" />
+                <group>
+                    <group>
+                        <field name="Temperature" />
+                        <field name="Specification" />
+                    </group>
+                    <group>
+                        <field name="ScheduledDeliveryTimeTcat" attrs="{'invisible':[('LogisticsSubType', '!=', 'TCAT')]}"/>
+                        <field name="ScheduledDeliveryTimeEcan" attrs="{'invisible':[('LogisticsSubType', '!=', 'ECAN')]}"/>
+                        <field name="ScheduledDeliveryDateEcan" attrs="{'invisible':[('LogisticsSubType', '!=', 'ECAN')]}"/>
+                    </group>
+                </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_ecpay_Logistics_inherit_sale_order" model="ir.ui.view">
+        <field name="name">view ecpay Logistics inherit sale order</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+        <xpath expr="//page/group/group[@name='technical']" position="before">
+            <group string="綠界物流訂單編號" name="Logistics_id">
+            <field name="ecpay_Logistics_id" readonly="1"/>
+            </group>
+        </xpath>
+        </field>
+    </record>
+
+    <act_window id="action_menuitem_logistic_ecpay" name="綠界物流訂單" res_model="shipping.ecpay.model" view_mode="tree,form" />
+    <!-- target="new" /> -->
+
+    <menuitem id="menuitem_logistic_ecpay" name="綠界物流訂單" action="action_menuitem_logistic_ecpay" parent="website_sale.menu_orders" sequence="6"/>
+
+</odoo>
