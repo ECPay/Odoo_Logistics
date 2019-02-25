@@ -6,8 +6,8 @@
     'summary': '物流 (Logistic): ECPay 綠界第三方物流模組',
     'version': '1.6',
     'description': """ECPay 綠界物流模組""",
-    'author' : '元植顧問',
-    'website' : 'https://www.yuanchih-consult.com/',
+	'author': 'ECPAY',
+    'website': 'http://www.ecpay.com.tw',
     'depends': ['delivery', 'mail'],
     'data': [
         'security/logistic_ecpay_access_rule.xml',
