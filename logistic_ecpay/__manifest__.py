@@ -8,9 +8,9 @@
     'description': """ECPay 綠界物流模組""",
 	'author': 'ECPAY',
     'website': 'http://www.ecpay.com.tw',
-	'icon': 'static/description/icon.png',
+	'icon': 'image/icon.png',
 	'license' : 'AGPL-3',
-	'images' : ['static/description/icon.jpg'],
+	'images' : ['image/1000x500.png'],
     'depends': ['delivery', 'mail'],
     'data': [
         'security/logistic_ecpay_access_rule.xml',
