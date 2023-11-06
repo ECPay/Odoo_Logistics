@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_company_form_ecpay_sender_info_view" model="ir.ui.view">
+            <field name="name">res.company.form.ecpay.sender.info</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='social_media']" position='after'>
+                    <group string="寄件人資訊" name="social_media">
+                        <field name="SenderName"/>
+                        <field name="SenderPhone"/>
+                        <field name="SenderCellPhone"/>
+                        <field name="SenderZipCode"/>
+                        <field name="SenderAddress"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

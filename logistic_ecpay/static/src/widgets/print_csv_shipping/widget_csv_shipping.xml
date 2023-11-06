@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template>
+
+    <t t-name="logistic_ecpay.PrintCSVShipping" owl="1">
+        <button class="btn btn-primary" t-on-click="_printShipping">
+            列印物流託運單
+        </button>
+    </t>
+
+</template>

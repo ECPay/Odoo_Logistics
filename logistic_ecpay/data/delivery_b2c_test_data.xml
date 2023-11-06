@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+<!--        針對 綠界全方位物流B2C 第一次使用測標需求 建立的測標平台資料-->
+        <record id="delivery_b2c_test_data_1" model="delivery.b2c.test">
+            <field name="logistics_name">全家物流(B2C)</field>
+            <field name="logistics_code">FAMI</field>
+        </record>
+
+        <record id="delivery_b2c_test_data_2" model="delivery.b2c.test">
+            <field name="logistics_name">7-ELEVEN超商物流(B2C)</field>
+            <field name="logistics_code">UNIMART</field>
+        </record>
+
+        <record id="delivery_b2c_test_data_3" model="delivery.b2c.test">
+            <field name="logistics_name">7-ELEVEN冷凍店取(B2C)</field>
+            <field name="logistics_code">UNIMARTFREEZE</field>
+        </record>
+
+    </data>
+</odoo>

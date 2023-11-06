@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="delivery_price_1" model="delivery.ecpay.price">
+            <field name="name">7-ELEVEN超商物流(B2C)</field>
+            <field name="code">UNIMART</field>
+            <field name="price">80</field>
+        </record>
+        <record id="delivery_price_2" model="delivery.ecpay.price">
+            <field name="name">全家物流(B2C)</field>
+            <field name="code">FAMI</field>
+            <field name="price">70</field>
+        </record>
+        <record id="delivery_price_3" model="delivery.ecpay.price">
+            <field name="name">7-ELEVEN冷凍店取(B2C)</field>
+            <field name="code">UNIMARTFREEZE</field>
+            <field name="price">120</field>
+        </record>
+        <record id="delivery_price_4" model="delivery.ecpay.price">
+            <field name="name">全家物流(C2C)</field>
+            <field name="code">FAMIC2C</field>
+            <field name="price">75</field>
+        </record>
+        <record id="delivery_price_5" model="delivery.ecpay.price">
+            <field name="name">7-ELEVEN超商物流(C2C)</field>
+            <field name="code">UNIMARTC2C</field>
+            <field name="price">80</field>
+        </record>
+        <record id="delivery_price_6" model="delivery.ecpay.price">
+            <field name="name">萊爾富物流(B2C)</field>
+            <field name="code">HILIFE</field>
+            <field name="price">75</field>
+        </record>
+        <record id="delivery_price_7" model="delivery.ecpay.price">
+            <field name="name">萊爾富物流(C2C)</field>
+            <field name="code">HILIFEC2C</field>
+            <field name="price">75</field>
+        </record>
+        <record id="delivery_price_8" model="delivery.ecpay.price">
+            <field name="name">OK超商(C2C)</field>
+            <field name="code">OKMARTC2C</field>
+            <field name="price">70</field>
+        </record>
+        <record id="delivery_price_9" model="delivery.ecpay.price">
+            <field name="name">黑貓物流</field>
+            <field name="code">TCAT</field>
+            <field name="price">100</field>
+        </record>
+        <record id="delivery_price_10" model="delivery.ecpay.price">
+            <field name="name">中華郵政</field>
+            <field name="code">POST</field>
+            <field name="price">80</field>
+        </record>
+
+    </data>
+</odoo>

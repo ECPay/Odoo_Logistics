@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <t t-name="logistic_ecpay.print_cvs_template">
+        <div>
+            <button type="button" class="oe_highlight o_print_cvs_button">
+                列印物流託運單
+            </button>
+        </div>
+    </t>
+</template>

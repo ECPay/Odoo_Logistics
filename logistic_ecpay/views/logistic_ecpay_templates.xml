@@ -1,152 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="assets_frontend" inherit_id="website.assets_frontend" name="assets_frontend_logistic_ecpay">
-        <xpath expr="." position="inside">
-            <script src="/logistic_ecpay/static/src/js/selection.js"></script>
-            <script src="/logistic_ecpay/static/src/js/jquery.twzipcode.min.js"></script>
-        </xpath>
-    </template>
+    <template id="payment_delivery_shipping_ecpay_delivery_carrier" inherit_id="website_sale_delivery.payment_delivery">
+        <xpath expr="//div[@id='payment_method']" position="before">
+            <input type="hidden" name="sale_order_id" t-att-value="order.id"/>
+            <t t-if="len(deliveries) == 1" t-set="delivery" t-value="deliveries[0]"/>
+            <input type="hidden" name="delivery_type" t-att-value="delivery.name"
+                   t-att-checked="order.carrier_id and order.carrier_id.id == delivery.id and 'checked' or False"/>
 
-    <template id="hidden_odoo_original_button" name="Hidden Odoo Original Button" inherit_id="website_sale.checkout">
-        <xpath expr="//div[@id='wrap']/div/div/div/div[last()]" position="replace">
-            <div>
-                <a href="/shop/cart" class="btn btn-default mb32">
-                    <span class="fa fa-long-arrow-left" /> Return to Cart</a>
-                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                <button type="submit" class="btn btn-primary pull-right mb32 " form="logistic_ecpay_form">Confirm <span class="fa fa-long-arrow-right" /></button>
+            <div class="col mx-0 my-2 row border align-items-center">
+                <span class="col-8" data-label="store-display" t-esc="store_name or '尚未選擇物流方式...'"/>
+                <button type="button" class="btn btn-info js_ecpay_button col" disabled="disabled">載入中...請稍候
+                </button>
             </div>
         </xpath>
     </template>
 
-    <template id="logistic_ecpay_shopping_stage" name="Logistic Ecpay Shopping Stage" inherit_id="website_sale.checkout">
-        <xpath expr="//div[hasclass('row','all_shipping')]" position="after">
-            <!-- 設定 ecpay 變數 -->
-            <t t-set="ecpay" t-value="request.env['delivery.carrier'].sudo().search([('delivery_type', '=', 'ecpay')], limit=1)" />
-            <!-- 設定 #isPublish 給 js 判斷 -->
-            <var id="isPublish" style="display: none;"><t t-esc="ecpay.website_published" /></var>
-            <t t-if="ecpay.website_published == False">
-                <!-- 使用 Odoo 原生物流地址 -->
-            </t>
-            <t t-else="">
-                <!-- 使用綠界物流地址 -->
-                <div class="clearfix" />
-                <form id="logistic_ecpay_form" action="/shop/confirm_order" method="POST">
-                    <div class="col-md-12 o_website_sale_rightfit" id="logistic_selection">
-                        <div class="form-group">
-                            <select class="form-control" id="shipping_method" ReceiverName="shipping_method">
-                                <option t-attf-select="selected">請選擇物流方式：</option>
-                                <t t-if="ecpay.ecpay_unimart">
-                                    <option t-attf-value="UNIMART">統一超商</option>
-                                </t>
-                                <t t-if="ecpay.ecpay_fami">
-                                    <option t-attf-value="FAMI">全家</option>
-                                </t>
-                                <t t-if="ecpay.ecpay_hilife">
-                                    <option t-attf-value="HILIFE">萊爾富</option>
-                                </t>
-                                <t t-if="ecpay.ecpay_tcat">
-                                    <option t-attf-value="TCAT">黑貓宅急便</option>
-                                </t>
-                                <t t-if="ecpay.ecpay_ecan">
-                                    <option t-attf-value="ECAN">宅配通</option>
-                                </t>    
-                            </select>
-                            <input type='hidden' id="shipping_type" name="shipping_type" value=""/>
-                        </div>
-                    </div>
-                    <div id="ecpaylogistic-store-info">
-                        <div class="col-md-12 store-info">
-                            <h4>收件門市</h4>
-                            <div class="form-group col-md-4">
-                                <label for="CVSStoreID">店舖編號</label>
-                                <input class="form-control" id="CVSStoreID" name="CVSStoreID" value="" readonly="readonly" />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="CVSStoreName">店舖名稱</label>
-                                <input class="form-control" id="CVSStoreName" name="CVSStoreName" value="" readonly="readonly" />
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="CVSTelephone">店舖電話</label>
-                                <input class="form-control" id="CVSTelephone" name="CVSTelephone" value="" readonly="readonly" />
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label for="CVSAddress">店舖地址</label>
-                                <input class="form-control" id="CVSAddress" name="CVSAddress" value="" readonly="readonly" />
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <p class="ecpaylogistic-warning bg-danger" style="padding:5px;">尚未選擇收件門市</p>
-                        </div>
-                        <!-- <input type="hidden" class="checkselectecpaylogistic" value="nonselected" /> -->
-                        <div class="col-md-12" style="color:red">提醒您，因使用FB及LINE APP內建瀏覽器進行操作時會發生網頁空白的問題，建議您可先複製商品連結後使用其他瀏覽器重新購買。</div>
-                        <div class="clearfix" />
-                    </div>
-                    <div class="clearfix" />
-                    <div class="col-md-12" id="ecpay_loistic_receiver_name_phone">
-                        <div id="div-ReceiverName" class="form-group col-md-6">
-                            <label for="ReceiverName">*收件人姓名(必填)</label>
-                            <input class="form-control" id="ReceiverName" maxlength="10" name="ReceiverName" type="text" />
-                            <p id="warning-ReceiverName" class="bg-danger" style="padding:5px;">請填寫正確收件人姓名</p>
-                        </div>
-                        <div id="div-ReceiverCellPhone" class="form-group col-md-6">
-                            <label for="ReceiverCellPhone">*收件人手機(必填)</label>
-                            <input class="form-control" id="ReceiverCellPhone" maxlength="10" name="ReceiverCellPhone" type="text" />
-                            <p id="warning-ReceiverCellPhone" class="bg-danger" style="padding:5px;">請填寫正確收件人手機號碼</p>
-                        </div>
-                    </div>
-                    <div class="clearfix" />
-                    <div class="col-md-12" id="ecpay_loistic_receiver_address">
-                        <div class="col-sm-12 o_website_sale_rightfit">
-                            <!-- <label for="id_ReceiverAddress">收件人地址</label> -->
-                            <label>*收件人地址(必填)</label>
-                        </div>
-                        <!-- <div id="twzipcode" class="form-inline"> -->
-                        <div id="twzipcode">
-                            <div data-role="county" class="form-group col-md-4" data-style="form-control" />
-                            <div data-role="district" class="form-group col-md-4" data-style="form-control" />
-                            <div data-role="zipcode" class="form-group col-md-4" data-style="form-control" />
-                        </div>
-                        <div class="clearfix" />
-                        <div id="div-ReceiverAddress" class="form-group col-md-12">
-                            <!-- <label for="id_ReceiverAddress">街道與門牌</label> -->
-                            <input class="col-sm-12 form-control" id="ReceiverAddress" maxlength="100" name="ReceiverAddress" type="text" />
-                            <p id="warning-ReceiverAddress" class="bg-danger" style="padding:5px;">請填寫正確收件人地址</p>
-                        </div>
-                        <div class="clearfix" />
-                        <script>
-                            $('#twzipcode').twzipcode();
-                        </script>
-                    </div>
-                    <div class="clearfix" />
-                </form>
-            </t>
-        </xpath>
-    </template>
-
-    <!-- 取得 cvs store info 之後, 關掉視窗去觸發 ajax -->
-    <template id="map_logistic_ecpay">
-        <script type='text/javascript'>
-            window.close();
-        </script>
-    </template>
-
-    <template id="ecpay_logistic_form" name="ECPay Logistic Form">
-        <div>
-            <form t-att-action="ecpay_url" name="ecpay_logistic_form" id="ecpay_logistic_form" method="POST">
-                <t t-foreach="parameters" t-as="parameter">
-                    <input type="hidden" t-att-name="parameter" t-att-value="parameter_value" />
-                </t>
-            </form>
-            <script type='text/javascript'>
-                document.getElementById('ecpay_logistic_form').submit();
-            </script>
-        </div>
-    </template>
-
-    <template id="assets_backend" name="tree view menu" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/logistic_ecpay/static/src/js/print_cvs_shipping.js"></script>
-        </xpath>
-    </template>
 </odoo>

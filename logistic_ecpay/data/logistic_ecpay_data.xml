@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <record id="ecpay_service_delivery" model="product.product">
-            <field name="name">ECPay 運費</field>
+        <record id="ecpay_service_delivery_1" model="product.product">
+            <field name="name">超商及宅配運費</field>
             <field name="default_code">Delivery</field>
             <field name="type">service</field>
-            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="categ_id" ref="delivery.product_category_deliveries"/>
             <field name="sale_ok" eval="False"/>
             <field name="purchase_ok" eval="False"/>
-            <field name="list_price">0.0</field>
+            <field name="standard_price">70</field>
+            <field name="taxes_id" eval='[(5,)]'/>  <!-- no taxes -->
         </record>
-        <record id="logistic_ecpay_data" model="delivery.carrier">
-            <field name="name">ECPay</field>
-            <field name="product_id" ref="logistic_ecpay.ecpay_service_delivery"/>
+        <record id="logistic_unimart_data" model="delivery.carrier">
+            <field name="name">全方位物流--超商取貨及宅配</field>
+            <field name="product_id" ref="logistic_ecpay.ecpay_service_delivery_1"/>
             <field name="fixed_price">0.0</field>
             <field name="sequence">4</field>
             <field name="delivery_type">ecpay</field>
@@ -22,27 +23,58 @@
             <field name="HashIV">h1ONHk4P4yqbl5LK</field>
             <field name="ecpay_unimart">True</field>
             <field name="ecpay_unimart_price">60</field>
+            <field name="ecpay_fami">False</field>
+            <field name="ecpay_fami_price">60</field>
+            <field name="ecpay_hilife">False</field>
+            <field name="ecpay_hilife_price">60</field>
+            <field name="ecpay_cod">False</field>
+            <field name="ecpay_tcat">False</field>
+            <field name="ecpay_tcat_price">100</field>
+            <field name="ecpay_ecan">False</field>
+            <field name="ecpay_ecan_price">100</field>
+            <field name="ezship_mart">False</field>
+            <field name="ezship_mart_price">100</field>
+            <field name="home_ship">False</field>
+            <field name="home_ship_price">100</field>
+        </record>
+        <record id="ecpay_service_delivery_2" model="product.product">
+            <field name="name">運費(貨到付款)</field>
+            <field name="default_code">Delivery</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="delivery.product_category_deliveries"/>
+            <field name="sale_ok" eval="False"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="standard_price">100</field>
+            <field name="taxes_id" eval='[(5,)]'/>  <!-- no taxes -->
+        </record>
+        <record id="logistic_fami_data" model="delivery.carrier">
+            <field name="name">全方位物流--貨到付款</field>
+            <field name="product_id" ref="logistic_ecpay.ecpay_service_delivery_2"/>
+            <field name="fixed_price">0.0</field>
+            <field name="sequence">5</field>
+            <field name="delivery_type">ecpay</field>
+            <field name="ecpay_type">c2c</field>
+            <field name="MerchantID">2000933</field>
+            <field name="HashKey">XBERn1YOvpM9nfZc</field>
+            <field name="HashIV">h1ONHk4P4yqbl5LK</field>
+            <field name="ecpay_unimart">False</field>
+            <field name="ecpay_unimart_price">60</field>
             <field name="ecpay_fami">True</field>
             <field name="ecpay_fami_price">60</field>
-            <field name="ecpay_hilife">True</field>
+            <field name="ecpay_hilife">False</field>
             <field name="ecpay_hilife_price">60</field>
-            <field name="ecpay_cod">True</field>
-            <field name="ecpay_tcat">True</field>
+            <field name="ecpay_cod">False</field>
+            <field name="ecpay_tcat">False</field>
             <field name="ecpay_tcat_price">100</field>
-            <field name="ecpay_ecan">True</field>
+            <field name="ecpay_ecan">False</field>
             <field name="ecpay_ecan_price">100</field>
+            <field name="ezship_mart">True</field>
+            <field name="ezship_mart_price">100</field>
+            <field name="home_ship">False</field>
+            <field name="home_ship_price">100</field>
+            <field name="IsCollection">True</field>
+            <field name="payment_provider_id" ref="payment_ecpay.payment_ecpay_provider_transfer"/>
         </record>
-        <record id="logistic_ecpay_cod" model="payment.acquirer">
-            <field name="name">ECPay 綠界物流-到店取貨付款</field>
-            <field name="image" type="base64" file="logistic_ecpay/static/src/img/ecpay_cod.jpg"/>
-            <field name="provider">transfer</field>
-            <field name="company_id" ref="base.main_company"/>
-            <!-- <field name="view_template_id" ref="transfer_form"/> -->
-            <field name="environment">test</field>
-            <field name="website_published" eval="True"/>
-            <field name="pre_msg"><![CDATA[
-<p>ECPay 綠界物流-到店取貨付款</p>]]>
-            </field>
-        </record>
+
     </data>
 </odoo>

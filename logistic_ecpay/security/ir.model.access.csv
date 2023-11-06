@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 logistic_ecpay_admin,Model admin access,model_shipping_ecpay_model,logistic_ecpay.group_manager,1,1,1,1
 logistic_ecpay_user,Model user access,model_shipping_ecpay_model,logistic_ecpay.group_user,1,0,0,0
+delivery_b2c_test_user,Model delivery_b2c_test_user,model_delivery_b2c_test,logistic_ecpay.group_user,1,0,0,0
+delivery_b2c_test_admin,Model delivery_b2c_test_admin,model_delivery_b2c_test,logistic_ecpay.group_manager,1,1,1,1
+delivery_ecpay_price_user,Access Delivery ECPay Price,model_delivery_ecpay_price,logistic_ecpay.group_manager,1,1,1,1
